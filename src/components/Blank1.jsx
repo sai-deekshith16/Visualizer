@@ -6,9 +6,10 @@ import { Input } from '@progress/kendo-react-inputs';
 import { Button } from '@progress/kendo-react-buttons';
 
 export default class Blank1 extends React.Component{
+    disable;
   constructor(props){
     super(props);
-
+    this.disable = false;
 	this.state = {addToEdge : 0,
 				addFromEdge: 0,
 				removeToEdge : 0,
@@ -65,6 +66,10 @@ export default class Blank1 extends React.Component{
 	this.setState({edgePair : ePair});
   }
 
+  startClicked = ()=>{
+      this.disable = true;
+  }
+  
   render(){
     return (
     <div className="justify-center">
@@ -73,7 +78,7 @@ export default class Blank1 extends React.Component{
 		<div style={{marginBottom:"5px"}}>
           <h2 style={{display:"inline"}}>Number of Vertices:         
           </h2>
-            <NumericTextBox  placeholder="please enter value" onChange={this.verticesOnChange} />
+            <Input  placeholder="please enter value" disabled = {this.disable} onChange={this.verticesOnChange} />
 		  </div>
             <div className="d-flex  justify-content-center" style = {{marginBottom:"5px"}}>
               <h2 style={{display:"inline", margin:"0px 5px 0px 0px"}}>Add Edge: </h2>
@@ -87,11 +92,20 @@ export default class Blank1 extends React.Component{
               <Input placeholder="to" style={{width:"100px"}} onChange = {this.removeEdgeToChange} />
 			  <Button onClick={this.removeEdge}>remove</Button>
             </div>
-        <div className="col-lg-12 col-md-12">
-          <Button onClick={() => this.clickChild()}>Start</Button>
+        <div style={{marginBottom : "5px"}}>
+          <Button onClick={() => {this.startClick();}}>Start</Button>
+        </div>
+        <div>
+          <Button onClick={() => {this.resumeClick();}}>Resume</Button>
+          <Button onClick={() => {this.pauseClick();}}>Pause</Button>
         </div>
       </div>
-      <Eulerian setClick={click => this.clickChild = click} vertices={ this.state.vertices} edges={this.state.edgePair} />
+      <Eulerian 
+            startButton ={click => this.startClick = click} 
+            resumeButton = {click => this.resumeClick = click }
+            pauseButton = {click => this.pauseClick = click }
+            vertices={ this.state.vertices} 
+            edges={this.state.edgePair} />
     </div>
     ); 
   }

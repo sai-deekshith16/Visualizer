@@ -23,8 +23,9 @@ export function Trail(edgePair,vertices){
     
 
     function dfs(v){
+        nodeTraverseOrder.push(v);
         for (; edgePointer[v] < g[v].length; edgePointer[v] += 1) {
-            nodeTraverseOrder.push(v);
+            if(edgePointer[v] !==0) nodeTraverseOrder.push(v);
             var edge = g[v][edgePointer[v]];
             var to = edge[0];
             var id = edge[1];
@@ -76,7 +77,6 @@ export function Trail(edgePair,vertices){
         }
         return {odd: oddVertex, start: start};
     }
-    console.log(idCount);
     if(idCount !== vertices){
         alert("The given graph is not strongly connected");
     }

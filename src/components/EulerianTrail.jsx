@@ -20,114 +20,127 @@ class EulerianTrail extends React.Component {
         }
     }
     iter = 0;
+    interval;
+    resume = true;
     getState = () =>{
         var res = Trail(this.state.edgePair,this.state.vertices);
-        var prev = null;
-        var cur = null;
-        setInterval(()=>{
-            if (this.iter === 0 ) {
-                var v = res.vertices[this.iter];
-                var vc = this.state.vertexColour;
-                vc[v] = "pink";
-                this.setState({vertexColour : vc},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
-                this.iter+=1;
-            }
-            else{
-                var v1 = res.vertices[this.iter-1];
-                var v2 = res.vertices[this.iter];
-                var vc = this.state.vertexColour;
-                if(v2 >0 && v1<0){
-                    v2 = v2;
-                    vc[v2] = "#ff00ff";
-                    v1 = v1+ 51;
-                    vc[v1] = "#006400";                    
-                    var ep = this.state.edgePair;
-                    console.log(v1,v2);
-
-                    var index;
-                    for(var i=0;i<ep.length;i++){
-                        if(ep[i][0]===v2 && ep[i][1] === v1){
-                            index = i;
-                            console.log("here");
-                            break;
-                        }
-                    }
-                    console.log(index);
-                    var ec = this.state.edgeColour;
-                    ec[index] = "#008000";
-                    this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
+        console.log(res.vertices);
+        this.interval = setInterval(()=>{
+            if(this.resume){            
+                if(this.iter >= res.vertices.length){
+                    this.iter = 0;
+                    clearInterval(this.interval);
                 }
-                else if(v1 <0 && v2<0){
-                    v2 = v2 + 51;
-                    vc[v2] = "#ff00ff";
-                    v1 = v1 + 51;
-                    vc[v1] = "#006400"; 
-                    var ep = this.state.edgePair;
-                    console.log(v1,v2);
-
-                    var index;
-                    for(var i=0;i<ep.length;i++){
-                        if(ep[i][0]===v2 && ep[i][1] === v1){
-                            index = i;
-                            console.log("here");
-
-                            break;
-                        }
-                    }
-                    console.log(index);
-                    var ec = this.state.edgeColour;
-                    ec[index] = "#008000";
-                    this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
-                }
-                else if(v2<0 && v1>0){
-                    v2 = v2 + 51;
-                    vc[v2] = "#006400";
-                    v1 = v1;
-                    vc[v1] = "#ff00ff";
-                    var ep = this.state.edgePair;
-                    var index;
-                    console.log(v1,v2);
-
-                    for(var i=0;i<ep.length;i++){
-                        if(ep[i][0]===v2 && ep[i][1] === v1){
-                            index = i;
-                            console.log("here");
-                            break;
-                        }
-                    }
-                    console.log(index);
-                    var ec = this.state.edgeColour;
-                    ec[index] = "#008000";
-                    this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});                  
+                if (this.iter === 0 ) {
+                    var v = res.vertices[this.iter];
+                    var vc = this.state.vertexColour;
+                    vc[v] = "pink";
+                    this.setState({vertexColour : vc},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
+                    this.iter+=1;
                 }
                 else{
-                    //console.log(ec);
-                    vc[v1] = "yellow";
-                    vc[v2] = "#ff00ff";
-                    var ep = this.state.edgePair;
-                    var index;
-                    console.log(v1,v2);
+                    var v1 = res.vertices[this.iter-1];
+                    var v2 = res.vertices[this.iter];
+                    var vc = this.state.vertexColour;
+                    if(v2 >0 && v1<0){
+                        v2 = v2;
+                        vc[v2] = "#ff00ff";
+                        v1 = v1+ 51;
+                        vc[v1] = "#006400";                    
+                        var ep = this.state.edgePair;
+                        console.log(v1,v2);
 
-                    for(var i=0;i<ep.length;i++){
-                        if(ep[i][0]===v1 && ep[i][1] === v2){
-                            index = i;
-                            console.log("here");
-                            break;
+                        var index;
+                        for(var i=0;i<ep.length;i++){
+                            if(ep[i][0]===v2 && ep[i][1] === v1){
+                                index = i;
+                                console.log("here");
+                                break;
+                            }
                         }
+                        console.log(index);
+                        var ec = this.state.edgeColour;
+                        ec[index] = "#008000";
+                        this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
                     }
-                    console.log(index);
-                    var ec = this.state.edgeColour;
-                    ec[index] = "#483d8b";
-                    this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});                  
-                }                
-                this.iter +=1;
+                    else if(v1 <0 && v2<0){
+                        v2 = v2 + 51;
+                        vc[v2] = "#ff00ff";
+                        v1 = v1 + 51;
+                        vc[v1] = "#006400"; 
+                        var ep = this.state.edgePair;
+                        console.log(v1,v2);
+
+                        var index;
+                        for(var i=0;i<ep.length;i++){
+                            if(ep[i][0]===v2 && ep[i][1] === v1){
+                                index = i;
+                                console.log("here");
+
+                                break;
+                            }
+                        }
+                        console.log(index);
+                        var ec = this.state.edgeColour;
+                        ec[index] = "#008000";
+                        this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
+                    }
+                    else if(v2<0 && v1>0){
+                        v2 = v2 + 51;
+                        vc[v2] = "#006400";
+                        v1 = v1;
+                        vc[v1] = "#ff00ff";
+                        var ep = this.state.edgePair;
+                        var index;
+                        console.log(v1,v2);
+
+                        for(var i=0;i<ep.length;i++){
+                            if(ep[i][0]===v2 && ep[i][1] === v1){
+                                index = i;
+                                break;
+                            }
+                        }
+                        console.log(index);
+                        var ec = this.state.edgeColour;
+                        ec[index] = "#008000";
+                        this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});                  
+                    }
+                    else{
+                        //console.log(ec);
+                        vc[v1] = "yellow";
+                        vc[v2] = "#ff00ff";
+                        var ep = this.state.edgePair;
+                        var index;
+                        console.log(v1,v2);
+
+                        for(var i=0;i<ep.length;i++){
+                            if(ep[i][0]===v1 && ep[i][1] === v2){
+                                index = i;
+                                console.log("here");
+                                break;
+                            }
+                        }
+                        console.log(index);
+                        var ec = this.state.edgeColour;
+                        ec[index] = "#483d8b";
+                        this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});                  
+                    }                
+                    this.iter +=1;
+                }
             }
-            
-        },1000);
+        },2000);
+    }
+    running = ()=>{
+        this.resume = true;
     }
 
+    pause = () =>{
+        this.resume = false;
+    }
     componentDidMount() {
-        this.props.setClick(this.getState);
+        this.props.startButton(this.getState);
+        this.props.resumeButton(this.running);
+        this.props.pauseButton(this.pause);
         drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour);
     }
 
@@ -143,10 +156,21 @@ class EulerianTrail extends React.Component {
             for(let i=0;i<this.props.edges.length;i++){
                 edgc.push("#9999b6");
             }
-            this.setState({vertices : this.props.vertices},()=>{ drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour); });
-            this.setState({edgePair : this.props.edges},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});            
-            this.setState({vertexColour : ver},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});
-            this.setState({edgeColour : edgc},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour);});                        
+            this.setState(
+            {   vertices : this.props.vertices,
+                edgePair : this.props.edges,
+                vertexColour : ver,
+                edgeColour : edgc
+             },()=>{ 
+                    drawScene(
+                        this.createSurface(),
+                        this.state.vertices,
+                        this.state.edgePair,
+                        this.state.vertexColour,
+                        this.state.edgeColour
+                ); 
+            });
+            
         }
     }
 
