@@ -10,7 +10,7 @@ class EulerianTrail extends React.Component {
         super(props);
 
         var edgec = [];
-        var vertexc = [];
+        var vertexc = ["yellow"];
         this.state={
             vertices:this.props.vertices,
             edgePair : this.props.edges,
@@ -29,10 +29,12 @@ class EulerianTrail extends React.Component {
             return;
         }
         this.updateComments(latestStatements);
-        var v1,v2,vc,v;
+        var v1,v2,vc,v,ec;
         var trail = res.trail.join(" ");
         this.interval = setInterval(()=>{
-            if(this.resume){            
+            if(this.resume){
+                console.log(vc,"vc");
+                console.log(ec,"ec");            
                 if(this.iter >= res.vertices.length){
                     latestStatements.unshift(<li>The final paths is {trail}</li>);
                     this.updateComments(latestStatements);
@@ -42,7 +44,7 @@ class EulerianTrail extends React.Component {
                 }
                 if (this.iter === 0 ) {
                     v = res.vertices[this.iter];
-                    vc = this.state.vertexColour;
+                    vc = {...this.state.vertexColour};
 
                     latestStatements.unshift(<li>The starting vertex is {v}</li>);
                     this.updateComments(latestStatements);
@@ -53,8 +55,8 @@ class EulerianTrail extends React.Component {
                 else{
                     v1 = res.vertices[this.iter-1];
                     v2 = res.vertices[this.iter];
-                    vc = this.state.vertexColour;
-                    var index,ep,ec,i;
+                    vc = {...this.state.vertexColour};
+                    var index,ep,i;
                     if(v2 >0 && v1<0){
                         vc[v2] = "#ff00ff";
                         v1 = v1+ 51;
@@ -68,7 +70,9 @@ class EulerianTrail extends React.Component {
                                 break;
                             }
                         }
-                        ec = this.state.edgeColour;
+                        latestStatements.unshift(<li>Backtracked the edge from {v2} to {v1}</li>)
+
+                        ec = {...this.state.edgeColour};
                         ec[index] = "#008000";
                         this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour,this.state.directed);});
                     }
@@ -88,7 +92,7 @@ class EulerianTrail extends React.Component {
                                 break;
                             }
                         }
-                        ec = this.state.edgeColour;
+                        ec = {...this.state.edgeColour};
                         ec[index] = "#008000";
                         this.updateComments(latestStatements);
                         this.setState({vertexColour:vc,edgeColour:ec},()=>{drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour,this.state.directed);});
@@ -103,22 +107,21 @@ class EulerianTrail extends React.Component {
                         if(v1===v2){
                         latestStatements.unshift(<li>No non visited egdes at vertex {v1}. Hence backTracking.</li>)
                         }
-
-                        for(i=0;i<ep.length;i++){
-                            if((ep[i][0]===v2 && ep[i][1] === v1) || (ep[i][0]===v1 && ep[i][1] === v2)){
-                                index = i;
-                                break;
-                            }
-                        }
-                        ec = this.state.edgeColour;
-                        ec[index] = "#008000";
+                            
+                    //    for(i=0;i<ep.length;i++){
+                    //        if((ep[i][0]===v2 && ep[i][1] === v1) || (ep[i][0]===v1 && ep[i][1] === v2)){
+                    //            index = i;
+                    //            break;
+                    //        }
+                    //    }
+                        ec = {...this.state.edgeColour};
+                        //if(index!= -1) ec[index] = "#008000";
                         this.updateComments(latestStatements);
                         this.setState({vertexColour:vc,edgeColour:ec},()=>{
                             drawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.edgeColour,this.state.directed);}
                             );                  
                     }
                     else{
-                        //console.log(ec);
                         vc[v1] = "yellow";
                         vc[v2] = "#ff00ff";
                         ep = this.state.edgePair;
@@ -130,7 +133,7 @@ class EulerianTrail extends React.Component {
                                     break;
                                 }
                             }
-                            ec = this.state.edgeColour;
+                            ec = {...this.state.edgeColour};
                             ec[index] = "#483d8b";
                             latestStatements.unshift(<li>Visited edge from {v1} to {v2}. The current vertex is {v2}</li>);
                             this.updateComments(latestStatements);
@@ -174,7 +177,7 @@ class EulerianTrail extends React.Component {
 
     componentDidUpdate(prevProps,prevState){
         if(prevProps !== this.props ){
-            let ver = [];
+            let ver = ["yellow"];
             for(let i=0;i<this.props.vertices;i++){
                 ver.push("yellow");
             }

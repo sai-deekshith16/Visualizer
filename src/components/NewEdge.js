@@ -30,10 +30,10 @@ export function NewEdge(from ,to,colour,directed){
         var dist = Math.sqrt(dx*dx + dy*dy)
         dx = dx/dist
         dy = dy/dist
-        var x3 = x1 + (dist/17)*dy
-        var y3 = y1 - (dist/17)*dx
-        var x4 = x2 + (dist/17)*dy
-        var y4 = y2 - (dist/17)*dx
+        var x3 = x1 + (dist/15)*dy
+        var y3 = y1 - (dist/15)*dx
+        var x4 = x2 + (dist/15)*dy
+        var y4 = y2 - (dist/15)*dx
     
         path.moveTo(x1, y1).curveTo([x3, y3], [x4, y4], [x2, y2]);
     

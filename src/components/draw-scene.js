@@ -8,20 +8,19 @@ export function drawScene(surface,vertices,edges,vertexColour,edgeColour,directe
     var x = -100;
     var y = 75;
     var group  = new Group();
-    var vertexCoordinates = [];
+    var vertexCoordinates = [[0,0]];
     for(var i=0;i<vertices;i++){
         x = (x+200);
         if(x>=900){
             x = 100;
             y = y+ 200;
         }
-        var cir = NewCircle([x,y],String(i),vertexColour[i]);
+        var cir = NewCircle([x,y],String(i+1),vertexColour[i+1]);
         vertexCoordinates.push([x,y]);
         group.append(cir);
     }
-    
     for(i=0;i<edges.length && vertices >0;i++){
-        if(edges[i][0] <vertices && edges[i][1] <vertices){
+        if(edges[i][0] <=vertices && edges[i][1] <=vertices){
             var edge = NewEdge(vertexCoordinates[edges[i][0]],vertexCoordinates[edges[i][1]],edgeColour[i],directed);
             group.append(edge);
         }

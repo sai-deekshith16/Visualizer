@@ -69,10 +69,6 @@ export default class MainPage extends React.Component{
 	this.setState({edgePair : ePair});
   }
 
-  startClicked = ()=>{
-      this.disable = true;
-  }
-
   Comments = (update)=>{
     this.setState({statements:update});
   }
@@ -83,6 +79,10 @@ export default class MainPage extends React.Component{
 
   directed = () =>{
     this.setState({directedEdges:true});
+  }
+
+  resetClick = () =>{
+    this.setState({vertices : 0, edgePair: []});
   }
 
   render(){
@@ -111,7 +111,7 @@ export default class MainPage extends React.Component{
             <div style={{marginBottom:"5px",textAlign:"center"}}> 
                 <div style={{marginBottom:"5px"}}>
                     <h2 style={{display:"inline"}}>Number of Vertices:</h2>
-                    <Input  placeholder="please enter value" disabled = {this.disable} onChange={this.verticesOnChange} />
+                    <Input  placeholder="please enter value" onChange={this.verticesOnChange} />
                 </div>
                 <div className="d-flex  justify-content-center" style = {{marginBottom:"5px"}}>
                     <h2 style={{display:"inline", margin:"0px 5px 0px 0px"}}>Add Edge: </h2>
@@ -131,6 +131,8 @@ export default class MainPage extends React.Component{
                 </div>
                 <div style={{marginBottom : "5px"}}>
                     <Button onClick={() => {this.startClick();}}>Start</Button>
+                    <Button onClick={() => {this.resetClick();}}>Reset</Button>
+
                 </div>
                 <div>
                     <Button onClick={() => {this.resumeClick();}}>Resume</Button>

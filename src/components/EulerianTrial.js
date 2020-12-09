@@ -8,15 +8,16 @@ export function Trail(edgePair,vertices,directed){
     var nodeTraverseOrder = [];
 
     var id = {};
-    var idReverse = [];
+    var idReverse = {};
     var idCount = 0;
 
     function getId(x) {
         if (!id.hasOwnProperty(x)) {
-        edgePointer[idCount] = 0;
-        idReverse[idCount] = x;
-        id[x] = idCount++;
+            edgePointer[idCount] = 0;
+            idReverse[idCount] = x;
+            id[x] = idCount++;
         }
+        console.log(idReverse);
         return id[x];
     }
     
@@ -118,8 +119,8 @@ export function Trail(edgePair,vertices,directed){
     }
     
     trail.reverse();
-    trail.map(function (id) {
-        return idReverse[id];
+    trail = trail.map(function (id) {
+        return idReverse[id];   
     });
     console.log(trail);
     return {
