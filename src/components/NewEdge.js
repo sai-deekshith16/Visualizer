@@ -1,4 +1,4 @@
-import {Path,Group } from '@progress/kendo-drawing';
+import {Path,Group,Text } from '@progress/kendo-drawing';
 import {Arrow} from './arrow';
 import {XY} from './CalXY';
 //import {deCasteljau} from './deCasteljau';
@@ -9,7 +9,7 @@ function midPoint(a,b){
     return point;
 }
 
-export function NewEdge(from ,to,colour,directed){
+export function NewEdge(from ,to,colour,directed,weight){
     
     var newTo = XY(from,to);
     var newFrom = XY(to,from);
@@ -51,13 +51,20 @@ export function NewEdge(from ,to,colour,directed){
 
     //var result = deCasteljau(points,t);
     //console.log(result);
-    
-    group.append(path,arrow);
+    group.append(path);
+    if(typeof weight !== "" && typeof weight !== 'undefined'){
+        var text = new Text(weight, m5, {
+            font: `bold 15px Arial`
+        });
+        group.append(text);
+    }
+
     
     //arrow = Arrow(m3,result,colour);
     //group.append(arrow);
     if(directed){
+        group.append(arrow);
         return group;
     }
-    return path;
+    return group;
 }

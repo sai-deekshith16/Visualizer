@@ -11,7 +11,8 @@ const MenuNavContainer = (props) => {
     return (
         <Menu onSelect={onSelect}>
             <MenuItem text="Home" data={{ route: '/' }}/>
-            <MenuItem text="EulerianTrail" data={{ route: '/Blank1' }}/>
+            <MenuItem text="EulerianTrail" data={{ route: '/Eulerian' }}/>
+            <MenuItem text="Prim's Algorithm" data = {{route : '/Prims'}}/>
         </Menu>
     );
 }
