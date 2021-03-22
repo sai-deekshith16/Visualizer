@@ -18,8 +18,6 @@ export default class PrimsMainPage extends React.Component{
         vertices : 0,
         tempVertices: 0,
         edgePair: new Array(0),
-        // statements :[],
-        // directedEdges: false
     }
   }
 
@@ -94,20 +92,33 @@ export default class PrimsMainPage extends React.Component{
 	this.setState({edgePair : this.state.edgePair});
   }
 
-  // Comments = (update)=>{
-  //   this.setState({statements:update});
-  // }
-  
-  // undirected = () =>{
-  //   this.setState({directedEdges:false});
-  // }
-
-  // directed = () =>{
-  //   this.setState({directedEdges:true});
-  // }
-
   resetClick = () =>{
-    this.setState({vertices : 0, edgePair: []});
+    var testedges = [
+						[
+							{node:1,weight:7,colour:"red"},
+							{node:4,weight:8,colour:"red"}
+                      	],
+						[
+							{node:4,weight:3,colour:"red"},
+							{node:2,weight:6,colour:"red"}
+						],
+						[
+							{node:3,weight:2,colour:"red"},
+							{node:4,weight:4,colour:"red"},
+							{node:5,weight:5,colour:"red"}
+						],
+						[
+							{node:4,weight:3,colour:"red"},
+							{node:5,weight:2,colour:"red"}	
+						],
+						[
+
+						],
+						[
+
+						]					
+					];
+    this.setState({vertices : 6, edgePair: testedges});
   }
 
   render(){
@@ -151,32 +162,19 @@ export default class PrimsMainPage extends React.Component{
             </div>
             <div className="container-fluid" style={{border:"10px 10px 10px 10px"}}>
                 <div className="row">
-                <div className="col-lg-8" style={{border:"3px solid grey"}}>
+                <div className="col-lg-12" style={{border:"3px solid grey"}}>
                     <PrimsPath 
                         startButton ={click => this.startClick = click} 
                         resumeButton = {click => this.resumeClick = click }
                         pauseButton = {click => this.pauseClick = click }
                         vertices={ this.state.vertices} 
                         edges={this.state.edgePair} 
-                        updateComments={this.Comments}
                         directed = {this.state.directedEdges}/>
                 </div>
-                <div className="col-lg-4" style={{border:"3px solid grey",overflowY:"scroll"}}>
-                    {this.state.statements}
-                </div>
+                {/* <div className="col-lg-4" style={{border:"3px solid grey",overflowY:"scroll"}}>
+                </div> */}
                 </div>
             </div>
-            {/* <div className="container-fluid" style={{border:"10px 10px 10px 10px"}}>
-                <div className="row">
-                <div className="col-lg-8" style={{border:"3px solid grey"}}>
-                  <p>prims algo here                    
-                  </p>
-                </div>
-                <div className="col-lg-4" style={{border:"3px solid grey",overflowY:"scroll"}}>
-                    {this.state.statements}
-                </div>
-                </div>
-            </div> */}
         </div>
     </div>
     ); 

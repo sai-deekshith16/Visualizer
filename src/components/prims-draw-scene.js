@@ -1,6 +1,7 @@
 import { Group } from '@progress/kendo-drawing';
 import {NewCircle} from "./NewCircle";
-import {NewEdge} from "./NewEdge"
+import {NewEdge} from "./NewEdge";
+import {testDrawScene} from "./testdrawScene";
 
 function midPoint(a,b){
     var point = [(a[0]+b[0])/2 - 5,(a[1]+b[1])/2 -5];
@@ -10,7 +11,7 @@ function midPoint(a,b){
 export function primsDrawScene(surface,vertices,edges,vertexColour,directed) {
     // Create a path and draw a straight line
    // const circle = NewCircle([100,100]);
-   console.log(edges);
+//    console.log(edges);
     var x = -100;
     var y = 75;
     var group  = new Group();
@@ -34,6 +35,8 @@ export function primsDrawScene(surface,vertices,edges,vertexColour,directed) {
             group.append(builtedge);
         }
     }
+    var temp = testDrawScene(2);
     // Render the group on the surface
+    group.append(temp);
     surface.draw(group);
 }

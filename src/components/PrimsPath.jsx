@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Surface } from '@progress/kendo-drawing';
 import { primsDrawScene } from './prims-draw-scene';
-import { prims} from './prims';
+import { prims} from './modifiedPrims';
+import _ from "lodash";
 
 class PrimsPath extends React.Component {
     surface;
@@ -21,13 +22,61 @@ class PrimsPath extends React.Component {
     resume = true;
     getState = () =>{
         var res =prims(this.state.edgePair,this.state.vertices);
-        console.log(res);
-        this.setState({edgePair : res},()=> { primsDrawScene(
-             this.surface,
-             this.state.vertices,
-             this.state.edgePair,
-             this.state.vertexColour
-         ); });
+        var len = res.length;
+        this.interval = setInterval(()=>{
+            if(this.resume){
+                if(this.iter === len){
+                    this.iter=0;
+                    clearInterval(this.interval);
+                    return;
+                }
+                else{
+                    // var resVert = res[this.iter][0];
+                    // var resVerCol = _.cloneDeep(this.state.vertexColour);
+                    
+                    // for(let item of resVert.visited){
+                        //     resVerCol[item] = "green";
+                        // }
+                        
+                        // for(let item of resVert.unvisited){
+                            //     resVerCol[item] = "yellow";
+                            // }
+                            // console.log(res[this.iter][1]);
+                            // this.setState({edgePair : res[this.iter][1], vertexColour: resVerCol},()=> { primsDrawScene(
+                                //     this.surface,
+                                //     this.state.vertices,
+                                //     this.state.edgePair,
+                                //     this.state.vertexColour
+                                // ); });
+                                
+                                
+                                var resVer = res[this.iter][0];
+                                var resVerCol = this.state.vertexColour;
+                                if(resVer >=0){
+                                    resVerCol[resVer] = "green";
+                                }
+                                var edgepairs = this.state.edgePair;
+                                var resEdges = res[this.iter][1];
+                                for(var i=0;i<resEdges.length;i++){
+                                    var temp = resEdges[i].edge;
+                                    for(var j=0;j<edgepairs[temp[0]].length;j++){
+                                        if(edgepairs[temp[0]][j].node === temp[1]){
+                                            edgepairs[temp[0]][j].colour = resEdges[i].colour;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                this.setState({edgePair : edgepairs, vertexColour: resVerCol},()=> { primsDrawScene(
+                                    this.surface,
+                                    this.state.vertices,
+                                    this.state.edgePair,
+                                    this.state.vertexColour
+                                    ); });
+                                }
+                                this.iter += 1;
+                            }
+                        },2000);
     }
     running = ()=>{
         this.resume = true;
@@ -35,10 +84,6 @@ class PrimsPath extends React.Component {
 
     pause = () =>{
         this.resume = false;
-    }
-    
-    updateComments = (stmnts) =>{
-        this.props.updateComments(stmnts);
     }
 
     componentDidMount() {        
