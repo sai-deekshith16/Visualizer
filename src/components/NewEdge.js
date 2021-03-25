@@ -10,7 +10,6 @@ function midPoint(a,b){
 }
 
 export function NewEdge(from ,to,colour,directed,weight){
-    
     var newTo = XY(from,to);
     var newFrom = XY(to,from);
     var x1 = newFrom[0] ;
@@ -21,7 +20,7 @@ export function NewEdge(from ,to,colour,directed,weight){
     var path = new Path({
             stroke: {
             color: colour,
-            width: 3,
+            width: 2,
         }
     });
     var arrow;

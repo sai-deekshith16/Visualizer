@@ -7,13 +7,13 @@ import _ from "lodash";
 
 class PrimsPath extends React.Component {
     surface;
+    started = false;
     constructor(props){
         super(props);
-        var vertexc = ["yellow"];
         this.state={
             vertices:this.props.vertices,
             edgePair : this.props.edges,
-            vertexColour : vertexc,
+            vertexColour : [],
             directed : this.props.directed
         }
     }
@@ -21,63 +21,79 @@ class PrimsPath extends React.Component {
     interval;
     resume = true;
     getState = () =>{
+        this.started = true;
         var res =prims(this.state.edgePair,this.state.vertices);
         var len = res.length;
+        var treeEdges = [];
         this.interval = setInterval(()=>{
             if(this.resume){
                 if(this.iter === len){
                     this.iter=0;
                     clearInterval(this.interval);
+                    this.updateColor(5);
                     return;
                 }
                 else{
-                    // var resVert = res[this.iter][0];
-                    // var resVerCol = _.cloneDeep(this.state.vertexColour);
-                    
-                    // for(let item of resVert.visited){
-                        //     resVerCol[item] = "green";
-                        // }
-                        
-                        // for(let item of resVert.unvisited){
-                            //     resVerCol[item] = "yellow";
-                            // }
-                            // console.log(res[this.iter][1]);
-                            // this.setState({edgePair : res[this.iter][1], vertexColour: resVerCol},()=> { primsDrawScene(
-                                //     this.surface,
-                                //     this.state.vertices,
-                                //     this.state.edgePair,
-                                //     this.state.vertexColour
-                                // ); });
-                                
-                                
-                                var resVer = res[this.iter][0];
-                                var resVerCol = this.state.vertexColour;
-                                if(resVer >=0){
-                                    resVerCol[resVer] = "green";
+                    if(this.iter === 0){
+                        this.updateColor(0);
+                    }
+                    else if(this.iter === 1){
+                        this.updateColor(1);
+                    }
+                    console.log(res[this.iter]);
+                    var resVer = res[this.iter][0];
+                    var resVerCol = this.state.vertexColour;
+                    if(resVer >=0){
+                        resVerCol[resVer] = "green";
+                        if(this.iter!==0){
+                            this.updateColor(2);
+                            setTimeout(() =>{
+                                this.updateColor(3);                                
+                            },1000);
+                        }
+                    }
+                    var edgepairs = this.state.edgePair;
+                    var resEdges = res[this.iter][1];
+                    if(resEdges.length >0 && resEdges[0].colour === "white"){
+                        this.updateColor(2);
+                    }
+                    else if(resEdges.length >0 && resEdges[0].colour === "blue" && this.iter !==1){
+                        this.updateColor(4);
+                    }
+                    else if(resVer <0 && resEdges.length===0){
+                        this.updateColor(4);
+                    }
+                    var greendEdge = null;
+                    for(var i=0;i<resEdges.length;i++){
+                        var temp = resEdges[i].edge;
+                        for(var j=0;j<edgepairs[temp[0]].length;j++){
+                            if(edgepairs[temp[0]][j].node === temp[1]){
+                                edgepairs[temp[0]][j].colour = resEdges[i].colour;
+                                var weig = edgepairs[temp[0]][j].weight;
+                                if(resEdges[i].colour === "green"){
+                                    greendEdge = [temp[0],temp[1],weig,"green"]
+                                    treeEdges.push(greendEdge);
                                 }
-                                var edgepairs = this.state.edgePair;
-                                var resEdges = res[this.iter][1];
-                                for(var i=0;i<resEdges.length;i++){
-                                    var temp = resEdges[i].edge;
-                                    for(var j=0;j<edgepairs[temp[0]].length;j++){
-                                        if(edgepairs[temp[0]][j].node === temp[1]){
-                                            edgepairs[temp[0]][j].colour = resEdges[i].colour;
-                                            break;
-                                        }
-                                    }
-                                }
-                                
-                                this.setState({edgePair : edgepairs, vertexColour: resVerCol},()=> { primsDrawScene(
-                                    this.surface,
-                                    this.state.vertices,
-                                    this.state.edgePair,
-                                    this.state.vertexColour
-                                    ); });
-                                }
-                                this.iter += 1;
+                                break;
                             }
-                        },2000);
+                        }
+                    }
+                    
+                    this.setState({edgePair : edgepairs, vertexColour: resVerCol},()=> { primsDrawScene(
+                        this.createSurface(),
+                        this.state.vertices,
+                        this.state.edgePair,
+                        this.state.vertexColour,
+                        greendEdge,
+                        resVer,
+                        treeEdges
+                        ); });
+                    }
+                    this.iter += 1;
+                }
+        },3000);
     }
+
     running = ()=>{
         this.resume = true;
     }
@@ -86,17 +102,21 @@ class PrimsPath extends React.Component {
         this.resume = false;
     }
 
+    updateColor = (count)=>{
+        this.props.updateAlgo(count);
+    }
+    
     componentDidMount() {        
         this.props.startButton(this.getState);
         this.props.resumeButton(this.running);
         this.props.pauseButton(this.pause);
-        primsDrawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,this.state.directed);
+        primsDrawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,null,-1,[]);
     }
 
     
 
     componentDidUpdate(prevProps,prevState){
-        if(prevProps !== this.props ){
+        if(prevProps !== this.props && !this.started){
             let ver = [];
             for(let i=0;i<this.props.vertices;i++){
                 ver.push("yellow");
@@ -113,7 +133,9 @@ class PrimsPath extends React.Component {
                         this.state.vertices,
                         this.state.edgePair,
                         this.state.vertexColour,
-                        this.state.directed
+                        null,
+                        -1,
+                        []
                 ); 
             });
             

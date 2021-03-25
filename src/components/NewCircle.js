@@ -3,7 +3,7 @@ const { Circle: GeomCircle } = geometry;
 
 
 export function NewCircle(center,id,colour) {
-      var circle = new Circle(new GeomCircle(center, 15), {
+      var circle = new Circle(new GeomCircle(center, 10), {
         fill: {
             color: colour
         }

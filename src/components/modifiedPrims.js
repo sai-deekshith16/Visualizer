@@ -2,7 +2,6 @@ import heap from "js-heap";
 import _ from "lodash";
 
 export function prims (edges,vertices){
-    console.log(edges);
     let pq = new heap(function(a,b){
         return b.priority - a.priority;
     });
@@ -14,7 +13,6 @@ export function prims (edges,vertices){
     var s = 0;
     var copyEdges = _.cloneDeep(edges);
     var temp = null;
-    console.log(prev);
     sample.push([0,[],"intial"]);
 
     for(var i=0;i<edges.length;i++){
@@ -178,7 +176,6 @@ export function prims (edges,vertices){
         }
      }
 
-    console.log(sample);
     return sample;
      //return result;
 }
