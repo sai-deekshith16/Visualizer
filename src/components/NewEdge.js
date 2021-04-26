@@ -20,7 +20,7 @@ export function NewEdge(from ,to,colour,directed,weight){
     var path = new Path({
             stroke: {
             color: colour,
-            width: 2,
+            width: 2.25,
         }
     });
     var arrow;

@@ -49,7 +49,7 @@ class PrimsPath extends React.Component {
                             this.updateColor(2);
                             setTimeout(() =>{
                                 this.updateColor(3);                                
-                            },1000);
+                            },1500);
                         }
                     }
                     var edgepairs = this.state.edgePair;

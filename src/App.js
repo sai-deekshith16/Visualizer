@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 
 import MainPage from "./components/MainPage";
 import PrimsMainPage from "./components/PrimsMainPage";
+import Krushkal from "./components/KrushkalMainPage";
 function App() {
   return (
     <Router>
@@ -15,6 +16,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path = "/Eulerian" component={MainPage} />
           <Route path = "/Prims" component={PrimsMainPage} />
+          <Route path = "/Krushkal" component={Krushkal} />
         </div>
         <div className="footer">
           <Footer />

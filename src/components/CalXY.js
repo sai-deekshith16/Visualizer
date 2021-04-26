@@ -4,7 +4,7 @@ export function XY(from, to){
     var ay = from[1];
     var by = to[1];
 
-    var size= 20;
+    var size= 15;
     var fullness1 = 5;
     var fullness2 = 6;
 

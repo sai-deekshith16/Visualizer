@@ -13,6 +13,7 @@ const MenuNavContainer = (props) => {
             <MenuItem text="Home" data={{ route: '/' }}/>
             <MenuItem text="EulerianTrail" data={{ route: '/Eulerian' }}/>
             <MenuItem text="Prim's Algorithm" data = {{route : '/Prims'}}/>
+            <MenuItem text="Krushkal Algorithm" data = {{route : '/Krushkal'}}/>
         </Menu>
     );
 }
