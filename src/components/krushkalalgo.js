@@ -15,9 +15,16 @@ class UnionFind {
     }
     
     find(x) {
-        if(this.parent[x] !== x) {
-            this.parent[x] = this.find(this.parent[x]);
+        var path = [];
+        path.push(x);
+        while(x !== this.parent[x]){
+            x = this.parent[x];
+            path.push(x);
         }
+        console.log(path);
+        // if(this.parent[x] !== x) {
+        //     this.parent[x] = this.find(this.parent[x]);
+        // }
         return this.parent[x];
     }
     

@@ -26,6 +26,7 @@ class Krushkal extends React.Component {
 
                 if(this.iter-1 === len){
                     this.iter=0;
+                    this.updateColor(3);
                     clearInterval(this.interval);
                     return;
                 }
@@ -36,6 +37,7 @@ class Krushkal extends React.Component {
                             ePair[i][j].colour = "blue";
                         }
                     }
+                    this.updateColor(0);
                     this.setState({
                         edgePair : ePair
                     },()=>{
@@ -43,18 +45,29 @@ class Krushkal extends React.Component {
                          this.createSurface(),
                          this.state.vertices,
                          this.state.edgePair,
-                         this.state.vertexColour
+                         this.state.vertexColour,
+                         null
                         )
                     });
                 }
                 else{
                     var curedge = res[this.iter-1];
                     var verColour = this.state.vertexColour;
+                    if(curedge.colour === "green" || curedge.colour === "white"){
+                        this.updateColor(2);
+                    }
+                    else{
+                        this.updateColor(1);
+                    }
                     if(curedge.colour !== "white" && verColour[curedge.from] !== "green"){
                         verColour[curedge.from] = curedge.colour;
                     }
                     if(curedge.colour !== "white" && verColour[curedge.to] !== "green"){
                         verColour[curedge.to] = curedge.colour;
+                    }
+                    var temp = null;
+                    if(curedge.colour === "green"){
+                        temp = curedge;
                     }
                     var edgePairs = this.state.edgePair;
                     for(var i=0;i<edgePairs[curedge.from].length;i++){
@@ -71,7 +84,8 @@ class Krushkal extends React.Component {
                          this.createSurface(),
                          this.state.vertices,
                          this.state.edgePair,
-                         this.state.vertexColour
+                         this.state.vertexColour,
+                         temp
                         )
                     });
                 }
@@ -88,14 +102,16 @@ class Krushkal extends React.Component {
         this.resume = false;
     }
     
+    updateColor = (count)=>{
+        this.props.updateAlgo(count);
+    }
+
     componentDidMount() {        
         this.props.startButton(this.getState);
         this.props.resumeButton(this.running);
         this.props.pauseButton(this.pause);
-        krushkalDrawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour);
+        krushkalDrawScene(this.createSurface(),this.state.vertices,this.state.edgePair,this.state.vertexColour,null);
     }
-
-    
 
     componentDidUpdate(prevProps,prevState){
         if(prevProps !== this.props && !this.started){
@@ -113,7 +129,8 @@ class Krushkal extends React.Component {
                      this.createSurface(),
                      this.state.vertices,
                      this.state.edgePair,
-                     this.state.vertexColour
+                     this.state.vertexColour,
+                     null
                      );
             });
             

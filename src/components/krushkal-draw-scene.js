@@ -3,7 +3,7 @@ import {NewCircle} from "./NewCircle";
 import {NewEdge} from "./NewEdge";
 const {transform} = geometry;
 
-export function krushkalDrawScene(surface,vertices,edges,vertexColour) {
+export function krushkalDrawScene(surface,vertices,edges,vertexColour,greenEdge) {
     var x = 30;
     var y = 75;
     var group  = new Group();
@@ -14,8 +14,10 @@ export function krushkalDrawScene(surface,vertices,edges,vertexColour) {
             y = y+ 150;
         }
         var cir = NewCircle([x,y],String(i),vertexColour[i]);
+        var cir2 = NewCircle([x + 700,y],String(i),vertexColour[i]);
         vertexCoordinates.push([x,y]);
         group.append(cir);
+        group.append(cir2);
         x = (x+150);
     }
 
@@ -28,6 +30,10 @@ export function krushkalDrawScene(surface,vertices,edges,vertexColour) {
             var fromCor = vertexCoordinates[i];
             var toCor = vertexCoordinates[edge.node];
             var builtedge = NewEdge(fromCor,toCor,edge.colour,false,edge.weight);
+            group.append(builtedge);
+            if(edge.colour === "green"){
+                builtedge = NewEdge([fromCor[0]+700,fromCor[1]],[toCor[0]+700,toCor[1]],edge.colour,false,"");
+            }
             group.append(builtedge);
         }
     }
